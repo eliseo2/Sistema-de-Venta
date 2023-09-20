@@ -5,6 +5,8 @@
  */
 package Vista;
 
+import Modelo.login;
+
 /**
  *
  * @author Eliseo Galván
@@ -16,6 +18,10 @@ public class Sistema extends javax.swing.JFrame {
      */
     public Sistema() {
         initComponents();
+    }
+
+    Sistema(login lg) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**

@@ -1,15 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Vista;
 
-/**
- *
- * @author Eliseo Galván
- */
+import Modelo.Conexion;
+import Modelo.LoginDAO;
+import Modelo.login;
+import javax.swing.JOptionPane;
+
+
 public class Login extends javax.swing.JFrame {
+                login lg = new login();
+                LoginDAO login = new LoginDAO();
+                Conexion conSQL = new Conexion();
 
     
     /**
@@ -20,6 +20,22 @@ public class Login extends javax.swing.JFrame {
        this.setLocationRelativeTo(null);
     }
 
+        public void validar(){
+            String correo = txtCorreo.getText();
+            String pass = String.valueOf(txtPass.getPassword());
+            if(!"".equals(correo) ||  !"".equals(pass)){
+              
+                lg = login.log(correo, pass);
+                if(lg.getCorreo()!= null && lg.getPass() != null){
+                    Sistema sis = new Sistema();
+                    sis.setVisible(true);
+                    dispose();
+                }else{
+                    JOptionPane.showMessageDialog(null,"Correo o contraseña incorrecta");
+                }
+            }
+            
+        }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -84,9 +100,7 @@ public class Login extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(95, 95, 95))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -128,7 +142,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCorreoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        validar();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
