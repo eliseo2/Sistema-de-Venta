@@ -8,7 +8,9 @@ package Vista;
 import Modelo.Cliente;
 import Modelo.ClienteDAO;
 import Modelo.login;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,13 +19,35 @@ import javax.swing.JOptionPane;
 public class Sistema extends javax.swing.JFrame {
 Cliente cl = new Cliente();
 ClienteDAO client = new ClienteDAO();
-    /**
-     * Creates new form Sistema
-     */
+DefaultTableModel modelo = new DefaultTableModel();    
+    
     public Sistema() {
         initComponents();
     }
+    
+    public void ListarCliente(){
+        List<Cliente> ListarCl = client.ListarCliente();
+        modelo = (DefaultTableModel) TableCliente.getModel();
+        Object[] ob = new Object[6];
+        for (int i = 0; i < ListarCl.size(); i++) {
+                ob[0] = ListarCl.get(i).getId();
+                ob[1] = ListarCl.get(i).getDni();
+                ob[2] = ListarCl.get(i).getNombre();
+                ob[3] = ListarCl.get(i).getTelefono();
+                ob[4] = ListarCl.get(i).getDireccion();
+                ob[5] = ListarCl.get(i).getRazon();
+                modelo.addRow(ob);
+        }
+        TableCliente.setModel(modelo); 
+    }
 
+    public void LimpiarTable(){
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            modelo.removeRow(i);
+            i--;
+        }
+    }
+    
     Sistema(login lg) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -156,6 +180,11 @@ ClienteDAO client = new ClienteDAO();
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Clientes.png"))); // NOI18N
         jButton2.setText("Clientes");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/proveedor.png"))); // NOI18N
         jButton3.setText("Proveedor");
@@ -960,6 +989,12 @@ ClienteDAO client = new ClienteDAO();
                                    JOptionPane.showMessageDialog(null,"Los campos estan vacios");
                                }
     }//GEN-LAST:event_btnGuardarClienteActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       LimpiarTable();
+        ListarCliente();
+       jTabbedPane1.setSelectedIndex(1); 
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
