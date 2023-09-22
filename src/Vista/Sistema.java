@@ -23,6 +23,7 @@ DefaultTableModel modelo = new DefaultTableModel();
     
     public Sistema() {
         initComponents();
+        //this.seLocationRelativeTo(null);
     }
     
     public void ListarCliente(){
@@ -44,7 +45,7 @@ DefaultTableModel modelo = new DefaultTableModel();
     public void LimpiarTable(){
         for (int i = 0; i < modelo.getRowCount(); i++) {
             modelo.removeRow(i);
-            i--;
+            i = i -1;
         }
     }
     
@@ -441,16 +442,22 @@ DefaultTableModel modelo = new DefaultTableModel();
 
             },
             new String [] {
-                "DNI/RUC", "NOMBRE", "TELÉFONO", "DIRECCIÓN", "RAZÓN SOCIAL"
+                "ID", "DNI/RUC", "NOMBRE", "TELÉFONO", "DIRECCIÓN", "RAZÓN SOCIAL"
             }
         ));
+        TableCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TableClienteMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(TableCliente);
         if (TableCliente.getColumnModel().getColumnCount() > 0) {
-            TableCliente.getColumnModel().getColumn(0).setPreferredWidth(50);
-            TableCliente.getColumnModel().getColumn(1).setPreferredWidth(100);
-            TableCliente.getColumnModel().getColumn(2).setPreferredWidth(50);
-            TableCliente.getColumnModel().getColumn(3).setPreferredWidth(80);
+            TableCliente.getColumnModel().getColumn(0).setPreferredWidth(20);
+            TableCliente.getColumnModel().getColumn(1).setPreferredWidth(50);
+            TableCliente.getColumnModel().getColumn(2).setPreferredWidth(100);
+            TableCliente.getColumnModel().getColumn(3).setPreferredWidth(50);
             TableCliente.getColumnModel().getColumn(4).setPreferredWidth(80);
+            TableCliente.getColumnModel().getColumn(5).setPreferredWidth(80);
         }
 
         btnGuardarCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/GuardarTodo.png"))); // NOI18N
@@ -466,6 +473,11 @@ DefaultTableModel modelo = new DefaultTableModel();
 
         btnEliminarCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/eliminar.png"))); // NOI18N
         btnEliminarCliente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEliminarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarClienteActionPerformed(evt);
+            }
+        });
 
         btnNuevoCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/nuevo.png"))); // NOI18N
         btnNuevoCliente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -505,13 +517,12 @@ DefaultTableModel modelo = new DefaultTableModel();
                         .addComponent(btnEliminarCliente)
                         .addGap(18, 18, 18)
                         .addComponent(btnNuevoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 605, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(txtIdCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addContainerGap(613, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE)))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -984,6 +995,9 @@ DefaultTableModel modelo = new DefaultTableModel();
                                    cl.setDireccion((txtDireccionCliente.getText()));
                                    cl.setRazon(txtRazonCliente.getText());
                                    client.RegistrarCliente(cl);
+                                   LimpiarTable();
+                                   LimpiarCliente();
+                                   ListarCliente();
                                    JOptionPane.showMessageDialog(null,"Cliente Registrado");
                                     } else{
                                    JOptionPane.showMessageDialog(null,"Los campos estan vacios");
@@ -995,6 +1009,32 @@ DefaultTableModel modelo = new DefaultTableModel();
         ListarCliente();
        jTabbedPane1.setSelectedIndex(1); 
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void TableClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableClienteMouseClicked
+        int fila = TableCliente.rowAtPoint(evt.getPoint());
+        txtIdCliente.setText(TableCliente.getValueAt(fila,0).toString());
+        txtDniCliente.setText(TableCliente.getValueAt(fila,1).toString());
+        txtNombreCliente.setText(TableCliente.getValueAt(fila,2).toString());
+        txtTelefonoCliente.setText(TableCliente.getValueAt(fila,3).toString());
+        txtDireccionCliente.setText(TableCliente.getValueAt(fila,4).toString());
+        txtRazonCliente.setText(TableCliente.getValueAt(fila,5).toString());
+        
+        
+        
+    }//GEN-LAST:event_TableClienteMouseClicked
+
+    private void btnEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarClienteActionPerformed
+        if (!"".equals(txtIdCliente.getText())) {
+            int   pregunta = JOptionPane.showConfirmDialog(null,"¿Estas seguro de eliminar?");
+            if (pregunta == 0) {
+                int id = Integer.parseInt(txtIdCliente.getText());
+                client.EliminarCliente(WIDTH);
+                LimpiarTable();
+                LimpiarCliente();
+                ListarCliente();
+            }
+        }
+    }//GEN-LAST:event_btnEliminarClienteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1141,4 +1181,14 @@ DefaultTableModel modelo = new DefaultTableModel();
     private javax.swing.JTextField txtTelefonoClienteVenta;
     private javax.swing.JTextField txtTelefonoProveedor;
     // End of variables declaration//GEN-END:variables
+private void LimpiarCliente(){
+    txtIdCliente.setText("");
+    txtDniCliente.setText("");
+    txtNombreCliente.setText("");
+    txtTelefonoCliente.setText("");
+    txtDireccionCliente.setText("");
+    txtRazonCliente.setText("");
+    
+}
+
 }
