@@ -23,6 +23,7 @@ DefaultTableModel modelo = new DefaultTableModel();
     
     public Sistema() {
         initComponents();
+        txtIdCliente.setVisible(true);
         //this.seLocationRelativeTo(null);
     }
     
@@ -470,6 +471,11 @@ DefaultTableModel modelo = new DefaultTableModel();
 
         btnEditarCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Actualizar (2).png"))); // NOI18N
         btnEditarCliente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEditarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarClienteActionPerformed(evt);
+            }
+        });
 
         btnEliminarCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/eliminar.png"))); // NOI18N
         btnEliminarCliente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -972,7 +978,7 @@ DefaultTableModel modelo = new DefaultTableModel();
     }//GEN-LAST:event_txtNombreClienteVentaActionPerformed
 
     private void btnNuevoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoClienteActionPerformed
-        // TODO add your handling code here:
+        LimpiarCliente();
     }//GEN-LAST:event_btnNuevoClienteActionPerformed
 
     private void txtNombreProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreProveedorActionPerformed
@@ -1035,6 +1041,28 @@ DefaultTableModel modelo = new DefaultTableModel();
             }
         }
     }//GEN-LAST:event_btnEliminarClienteActionPerformed
+
+    private void btnEditarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarClienteActionPerformed
+       if("".equals(txtIdCliente.getText())){
+           JOptionPane.showMessageDialog(null, "Seleccione una fila");
+       } else{
+          
+           if(!"".equals(txtDniCliente.getText()) || !"".equals(txtNombreCliente.getText()) || !"".equals(txtTelefonoCliente.getText())) {
+                cl.setDni(Integer.parseInt(txtDniCliente.getText()));
+           cl.setNombre(txtNombreCliente.getText());
+            cl.setTelefono(Integer.parseInt(txtTelefonoCliente.getText()));
+           cl.setDireccion(txtDireccionCliente.getText());
+           cl.setRazon(txtRazonCliente.getText());
+           cl.setId(Integer.parseInt(txtIdCliente.getText()));
+               client.ModificarCliente(cl);
+               LimpiarTable();
+               LimpiarCliente();
+               ListarCliente();
+           } else{
+               JOptionPane.showMessageDialog(null,"Los campos están vacios");
+           }
+       } 
+    }//GEN-LAST:event_btnEditarClienteActionPerformed
 
     /**
      * @param args the command line arguments
